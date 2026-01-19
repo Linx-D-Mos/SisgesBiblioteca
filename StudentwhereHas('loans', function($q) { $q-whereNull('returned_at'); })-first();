@@ -1,0 +1,38 @@
+[90m= [39m[34;4mApp\Models\Book[39;24m {#6070
+    [34mid[39m: [35m1[39m,
+    [34mtitle[39m: "[32mPraesentium ut provident dicta nesciunt.[39m",
+    [34misbn[39m: "[32m9787957574709[39m",
+    [34mpublished_year[39m: [35m2019[39m,
+    [34mstock[39m: [35m6[39m,
+    [34mcreated_at[39m: "[32m2026-01-18 01:00:47[39m",
+    [34mupdated_at[39m: "[32m2026-01-18 01:00:47[39m",
+    [34mauthors[39m: [34;4mIlluminate\Database\Eloquent\Collection[39;24m {#6509
+      [34mall[39m: [
+        [34;4mApp\Models\Author[39;24m {#6487
+          [34mid[39m: [35m2[39m,
+          [34mname[39m: "[32mKristin[39m",
+          [34mlast_name[39m: "[32mKemmer[39m",
+          [34mbiography[39m: "[32mRepellat voluptas sunt ex sed. Consequatur ut adipisci non incidunt. Corrupti consequatur eius doloremque autem est voluptatibus.[39m",
+          [34mcreated_at[39m: "[32m2026-01-18 01:00:47[39m",
+          [34mupdated_at[39m: "[32m2026-01-18 01:00:47[39m",
+          [34mpivot[39m: [34;4mIlluminate\Database\Eloquent\Relations\Pivot[39;24m {#6490
+            [34mbook_id[39m: [35m1[39m,
+            [34mauthor_id[39m: [35m2[39m,
+          },
+        },
+        [34;4mApp\Models\Author[39;24m {#6489
+          [34mid[39m: [35m7[39m,
+          [34mname[39m: "[32mAlvena[39m",
+          [34mlast_name[39m: "[32mMurazik[39m",
+          [34mbiography[39m: "[32mDeleniti eum et sed sunt. Magni voluptas sunt et et voluptatem. Enim vero sunt recusandae quia sapiente fuga consequatur.[39m",
+          [34mcreated_at[39m: "[32m2026-01-18 01:00:47[39m",
+          [34mupdated_at[39m: "[32m2026-01-18 01:00:47[39m",
+          [34mpivot[39m: [34;4mIlluminate\Database\Eloquent\Relations\Pivot[39;24m {#6511
+            [34mbook_id[39m: [35m1[39m,
+            [34mauthor_id[39m: [35m7[39m,
+          },
+        },
+      ],
+    },
+  }
+
