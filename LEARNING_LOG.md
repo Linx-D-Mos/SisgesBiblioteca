@@ -64,3 +64,40 @@ Controlamos manualmente returned_at para simular libros pendientes vs. devueltos
 Git: La interfaz gráfica de VS Code muestra el Staging Area, no el historial. Para ver el historial real: git log --oneline o extensión "Git Graph".
 
 Comando de Reinicio: php artisan migrate:fresh --seed (Borra todo, migra y siembra).
+
+## 📅 [19-01-2026] - Finalización del CRUD de Libros y Testing Automatizado
+
+### 1. 🛠️ Configuración y Corrección del Entorno de Testing
+- **Instalación de Pest PHP:** Configuración inicial y resolución de conflictos de dependencias con PHPUnit y Collision en el `composer.json`.
+- **Corrección de `Pest.php`:** Se habilitó la carga del entorno de Laravel (App) en los tests unitarios (`Unit`), ya que por defecto solo estaba habilitado para `Feature`. Esto solucionó el error `Call to member function connection() on null`.
+- **Faker en Factories:** Se estandarizó el uso de `$this->faker->name()` para evitar errores de `InvalidArgumentException` por configuraciones de idioma (Locale) faltantes en el entorno de testing.
+
+### 2. ✅ TDD: Tests Unitarios de Modelos
+Se crearon pruebas para asegurar la integridad de la base de datos antes de construir la API:
+- **`BookTest`:** Verificación de la relación "Muchos a Muchos" (N:M) con Autores usando `hasAttached`.
+- **`StudentTest`:** Validación de la restricción `unique` en el email, asegurando que se lance una `QueryException` al intentar duplicados.
+- **`LoanTest`:** Verificación del *Casting* de fechas (`loaned_at` como instancia de `Carbon`) y la relación `belongsTo` con estudiantes.
+
+### 3. 🚀 Desarrollo API RESTful (Módulo Libros)
+Implementación completa del controlador `BookController` con arquitectura profesional:
+
+#### A. Creación (Store)
+- **Validación (`StoreBookRequest`):** Reglas para ISBN único, año como entero de 4 dígitos y validación de array de autores existentes (`exists:authors,id`).
+- **Transacciones:** Uso de `DB::transaction` para asegurar que el libro y sus relaciones se guarden atómicamente.
+- **Relaciones:** Uso de `sync()` para vincular autores en la tabla pivote.
+
+#### B. Lectura (Index & Show)
+- **Optimización:** Solución del problema **N+1** usando *Eager Loading* (`with('authors')`).
+- **Paginación:** Implementación de `paginate(10)` en lugar de `all()` para proteger la memoria del servidor.
+- **Recursos (`BookResource`):** Transformación de datos y anidación de `AuthorResource` para respuestas JSON limpias.
+
+#### C. Actualización (Update)
+- **Validación Condicional (`UpdateBookRequest`):** Implementación de `Rule::unique(...)->ignore($this->book)` para permitir guardar el mismo ISBN si pertenece al libro que se está editando.
+
+#### D. Eliminación (Destroy)
+- **Limpieza:** Desvinculación previa de relaciones con `detach()` dentro de una transacción.
+- **Estándar HTTP:** Retorno de código **204 No Content** al eliminar exitosamente.
+
+### 4. 🐛 Debugging y Herramientas
+- **Postman:** Solución de error `ECONNREFUSED` ajustando el puerto (8001 vs 80) y configuración del Header `Accept: application/json` para ver errores de validación en lugar de HTML.
+- **DBeaver:** Corrección de la conexión a la base de datos correcta (`sisgesbiblioteca` en lugar de `postgres`) para visualizar las tablas migradas.

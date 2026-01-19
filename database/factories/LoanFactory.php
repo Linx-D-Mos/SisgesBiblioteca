@@ -16,6 +16,7 @@ class LoanFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
     public function definition(): array
     {
         //Generate a random date/time within a spacific range
@@ -24,7 +25,7 @@ class LoanFactory extends Factory
             'book_id' => Book::factory()->create(),
             'student_id' => Student::factory()->create(),
             'loaned_at' => $date,
-            'returned_at' => now(),
+            'returned_at' => (rand(1, 2) == 1) ? now() : null,
         ];
     }
 }

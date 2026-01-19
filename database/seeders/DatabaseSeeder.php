@@ -14,9 +14,6 @@ class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
         $authors = Author::factory(10)->create();
@@ -32,7 +29,6 @@ class DatabaseSeeder extends Seeder
                         ->create([
                             'book_id' => $books->random()->id,
                             'student_id' => $student->id,
-                            'returned_at' => (rand(1, 2) == 1) ? now() : null,
                         ]);
                 }
             }
