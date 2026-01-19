@@ -59,7 +59,7 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    
+
     public function update(UpdateBookRequest $request, Book $book)
     {
         try {
@@ -75,7 +75,7 @@ class BookController extends Controller
         } catch (Exception $e) {
             Log::error('Error actualizando el libro: ' . $e->getMessage());
             return response()->json([
-                'message' => 'Ocurrio un error interno al procesar su solicitud' . $e->getMessage()
+                'message' => 'Ocurrio un error interno al procesar su solicitud'
             ], 500);
         }
     }
@@ -96,7 +96,7 @@ class BookController extends Controller
         } catch (Exception $e) {
             Log::error('Error actualizando el libro: ' . $e->getMessage());
             return response()->json([
-                'message' => 'Ocurrio un error interno al procesar su solicitud' . $e->getMessage()
+                'message' => 'Ocurrio un error interno al procesar su solicitud' 
             ], 500);
         }
     }
