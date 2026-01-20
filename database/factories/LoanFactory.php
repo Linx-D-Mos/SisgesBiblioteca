@@ -22,8 +22,8 @@ class LoanFactory extends Factory
         //Generate a random date/time within a spacific range
         $date = $this->faker->dateTimeBetween('-30 days', '-2 days');
         return [
-            'book_id' => Book::factory()->create(),
-            'student_id' => Student::factory()->create(),
+            'book_id' => Book::factory()->create()->id,
+            'student_id' => Student::factory()->create()->id,
             'loaned_at' => $date,
             'returned_at' => (rand(1, 2) == 1) ? now() : null,
         ];

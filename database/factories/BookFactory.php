@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,7 +24,16 @@ class BookFactory extends Factory
             'title' => $this->faker->sentence(3),
             'isbn' => $this->faker->unique()->isbn13(),
             'published_year' => $this->faker->year(),
-            'stock' => $this->faker->numberBetween(0,20)
+            'stock' => $this->faker->numberBetween(0, 20),
         ];
+    }
+    public function configure()
+    {
+        return $this->afterCreating(function (Book $book) {
+            //Pregunta si de casualidad no cuenta con la relación de authores creada ya
+            if($book->authors()->count() === 0){
+                $book->authors()->attach(Author::factory()->create());
+            }
+        });
     }
 }

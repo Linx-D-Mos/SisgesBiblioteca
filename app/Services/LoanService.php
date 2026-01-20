@@ -19,7 +19,7 @@ class LoanService
         //llamamos la funcion auxiliar de verificar el stock de un libro para comprobar que al menos tenga 1 libro 
         if (!$this->verifyngBookStock($book)) {
 
-            throw new Exception('El libro no cuenta con suficiente stock.');
+            throw new Exception('El libro '. $book->title .'no cuenta con suficiente stock.');
         }
         //Luego usamos la funcion de ver si el estudiante tiene credito disponible, osea que tiene 2 o menos libros en
         //sin devolver.
@@ -55,5 +55,22 @@ class LoanService
     {
         
         return $student->loans()->where('returned_at', NULL)->count() < 3;
+    }
+    public function returnLoan(Loan $loan): Loan
+    {
+        if(!$this->verifyingReturnDate($loan)){
+            throw new Exception('Este libro ya fue devuelto');
+        }
+        $loan = DB::transaction( function() use ($loan) {
+            $loan->update(['returned_at' => now()]);
+            $loan->book()->increment('stock');
+
+            return $loan->load('book', 'student');
+        });
+        return $loan;
+    }
+    public function verifyingReturnDate(Loan $loan)
+    {
+        return $loan->returned_at === null;
     }
 }

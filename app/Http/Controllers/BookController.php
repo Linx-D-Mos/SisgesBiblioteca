@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Book\UpdateBookRequest;
-use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\Book\StoreBookRequest;
 use App\Http\Resources\Book\BookResource;
 use App\Http\Resources\StoreBookResource;
 use App\Models\Book;

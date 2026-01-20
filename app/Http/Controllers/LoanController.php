@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Loan\StoreLoanRequest;
 use App\Http\Resources\Loan\LoanResource;
 use App\Models\Book;
+use App\Models\Loan;
 use App\Models\Student;
 use App\Services\LoanService;
 use Exception;
@@ -56,10 +57,7 @@ class LoanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    public function update(Request $request, string $id) {}
 
     /**
      * Remove the specified resource from storage.
@@ -67,5 +65,22 @@ class LoanController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function returnBook(Loan $loan, LoanService $loanService)
+    {
+        try {
+            $loan = $loanService->returnLoan($loan);
+            return (new LoanResource($loan))
+                ->additional([
+                    'message' => '¡Libro devuelto con exito!'
+                ])
+                ->response()
+                ->setStatusCode(Response::HTTP_OK);
+        } catch (Exception $e) {
+            Log::error('Error al intentar devolver el libro' . $e->getMessage());
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 409);
+        }
     }
 }

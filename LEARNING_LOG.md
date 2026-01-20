@@ -120,3 +120,23 @@ Aprendí a probar endpoints HTTP completos en lugar de solo clases aisladas.
 
 ### 3. Estándares REST
 - **Delete:** No se devuelve JSON de confirmación, se devuelve un status 204 (No Content).
+
+## 📅 [20-01-2026] - Lógica de Negocio Avanzada y Servicios
+
+### 1. 🏗️ Patrón de Servicios (Service Layer)
+Aprendí a desacoplar la lógica de negocio de los Controladores.
+- **Cuándo usarlos:** Cuando hay lógica compleja, validaciones de negocio múltiples o transacciones que tocan varias tablas.
+- **Beneficio:** El Controlador solo "orquesta" (recibe petición -> llama servicio -> devuelve respuesta), manteniéndose limpio ("Skinny Controller").
+- **Inyección:** Se inyectan en el constructor del controlador (`__construct(LoanService $service)`).
+
+### 2. 📦 Optimización de API Resources
+- **Solución N+1:** Evitar hacer consultas (`Book::find`) dentro de un `JsonResource`.
+- **Eager Loading:** Cargar las relaciones previamente en el Servicio (`$loan->load('book')`) y acceder a ellas en el recurso (`$this->book->title`).
+
+### 3. 🧪 Estrategias de Testing
+- **Test After:** Escribir la lógica primero y los tests después para validar flujos críticos (como stock 0).
+- **Factories Avanzados:** Uso de `configure()` y `afterCreating` para manejar relaciones complejas en factories.
+- **Unit vs Feature:** Testear la clase Servicio aislada (Unit) para reglas de negocio y el Controlador (Feature) para códigos HTTP (409 vs 200).
+
+---
+**PROYECTO 1 COMPLETADO: Sistema de Biblioteca**

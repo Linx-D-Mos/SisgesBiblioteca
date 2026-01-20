@@ -23,9 +23,8 @@ class StoreLoanRequest extends FormRequest
     {
         return [
             'book_id' => 'required|integer|exists:books,id',
-            'student_id' => 'required|string|exists:students,id',
-            'loaned_at' => 'required|date',
-            'returne_at' => 'nullable|date',
+            'student_id' => 'required|integer|exists:students,id',
+            'returned_at' => 'nullable|date',
         ];
     }
 }
