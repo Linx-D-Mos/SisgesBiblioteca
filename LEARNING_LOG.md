@@ -101,3 +101,22 @@ Implementación completa del controlador `BookController` con arquitectura profe
 ### 4. 🐛 Debugging y Herramientas
 - **Postman:** Solución de error `ECONNREFUSED` ajustando el puerto (8001 vs 80) y configuración del Header `Accept: application/json` para ver errores de validación en lugar de HTML.
 - **DBeaver:** Corrección de la conexión a la base de datos correcta (`sisgesbiblioteca` en lugar de `postgres`) para visualizar las tablas migradas.
+
+## 📅 [20-01-2026] - Feature Testing y CRUD de Estudiantes
+
+### 1. Testing de API (Feature Tests)
+Aprendí a probar endpoints HTTP completos en lugar de solo clases aisladas.
+- **Simulación de Peticiones:** Usar `postJson`, `putJson`, `deleteJson` para asegurar que Laravel maneje las cabeceras `Accept: application/json` correctamente.
+- **Asserts Clave:**
+  - `assertCreated()` (201) para creaciones.
+  - `assertNoContent()` (204) para eliminaciones.
+  - `assertJsonCount(10, 'data')` para verificar que la paginación realmente corta los resultados.
+- **RefreshDatabase:** Fundamental usar `uses(RefreshDatabase::class)` para limpiar la BD entre tests y evitar datos basura.
+
+### 2. Errores Comunes y Soluciones
+- **Validación en Controlador:** Diferencia crítica entre `$request->validate()` (ejecuta validación, retorna void/redirección) y `$request->validated()` (retorna el array de datos limpios).
+- **Rutas de Update:** Siempre requieren el ID en la URL (`/api/students/{id}`).
+- **Modelos en Tests:** Los modelos en memoria no se actualizan solos. Si cambio algo en la BD, debo usar `$student->refresh()` para ver los cambios en la variable PHP.
+
+### 3. Estándares REST
+- **Delete:** No se devuelve JSON de confirmación, se devuelve un status 204 (No Content).
