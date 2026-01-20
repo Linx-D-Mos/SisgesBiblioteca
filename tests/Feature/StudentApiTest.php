@@ -5,6 +5,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\postJson as postJsonRequest;
 
 uses(RefreshDatabase::class);
@@ -22,14 +23,39 @@ it('creates a student in the DB', function () {
     $response->assertStatus(201);
 })->group('student');
 
-it('show all the students', function(){
+it('show all the students', function () {
     $students = Student::factory(15)->create();
     $response = $this->getJson('/api/students');
     $response->assertJsonStructure([
         'data' => [],
         'links' => [],
         'meta' => [],
-    ])->assertJsonCount(10,'data');
+    ])->assertJsonCount(10, 'data');
     $response->assertStatus(200);
+})->group('student');
 
+it('update an student', function () {
+    $student = Student::factory()->create();
+    $response = $this->putJson(
+        "/api/students/{$student->id}",
+        [
+            'student_code' => $student->student_code,
+            'name' =>  'Albert',
+            'last_name' => 'Einstein',
+            'email' => $student->email,
+        ]
+    );
+    $response->assertStatus(200);
+    $student->refresh();
+    expect($student->name)
+        ->toBe('Albert');
+    expect($student->last_name)
+        ->toBe('Einstein');
+})->group('student');
+
+it('destroys an student', function () {
+    $student = Student::factory()->create();
+    $response = $this->deleteJson("/api/students/{$student->id}");
+    $response->assertNoContent();
+    assertDatabaseMissing('students', ['id' => $student->id]);
 })->group('student');

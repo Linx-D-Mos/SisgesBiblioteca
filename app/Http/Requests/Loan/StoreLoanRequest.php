@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Student;
+namespace App\Http\Requests\Loan;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreStudentRequest extends FormRequest
+class StoreLoanRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,10 @@ class StoreStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'student_code' => 'required|string|unique:students,student_code',
-            'name' => 'required|string',
-            'last_name' => 'required|string' ,
-            'email' => 'required|string|email|unique:students,email'
+            'book_id' => 'required|integer|exists:books,id',
+            'student_id' => 'required|string|exists:students,id',
+            'loaned_at' => 'required|date',
+            'returne_at' => 'nullable|date',
         ];
     }
 }

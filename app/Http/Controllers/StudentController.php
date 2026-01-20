@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Student\StoreStudentRequest;
+use App\Http\Requests\Student\UpdateStudentRequest;
 use App\Http\Resources\Student\StudentResource;
 use App\Models\Student;
 use Exception;
@@ -47,16 +48,20 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateStudentRequest $request, Student $student)
     {
-        //
+        $student->update($request->validated());
+        return (new StudentResource($student))
+        ->response()
+        ->setStatusCode(Response::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy(Student $student)
+    {   
+        $student->delete();
+        return response()->noContent();
     }
 }
