@@ -137,6 +137,25 @@ Aprendí a desacoplar la lógica de negocio de los Controladores.
 - **Test After:** Escribir la lógica primero y los tests después para validar flujos críticos (como stock 0).
 - **Factories Avanzados:** Uso de `configure()` y `afterCreating` para manejar relaciones complejas en factories.
 - **Unit vs Feature:** Testear la clase Servicio aislada (Unit) para reglas de negocio y el Controlador (Feature) para códigos HTTP (409 vs 200).
+- 
+## 📅 [21-01-2026] - Debugging, Namespaces y Route Model Binding
 
+### 1. 📂 Refactorización y Namespaces
+Aprendí que mover archivos físicamente no basta. PHP requiere que el `namespace` dentro del archivo coincida con la estructura de carpetas.
+- **Error:** `Class not found` al mover un Request.
+- **Solución:**
+  1. Actualizar `namespace App\Http\Requests\Book;` en el archivo.
+  2. Actualizar el `use` en el Controlador.
+  3. Ejecutar `sail composer dump-autoload` si persiste.
+
+### 2. 🤖 Route Model Binding y Errores 404
+- Descubrí que al inyectar el modelo en el método (`show(Book $book)`), Laravel busca el registro automáticamente **antes** de entrar al método.
+- **No hace falta try-catch:** Si no existe, Laravel lanza `ModelNotFoundException` y devuelve 404 automáticamente.
+- **Mantener controladores limpios:** Delegar el manejo de errores estándar al Framework.
+
+### 3. 🌐 Headers HTTP
+- **Accept: application/json**: Obligatorio en Postman/Clientes API.
+  - Sin esto, Laravel cree que es un navegador y devuelve HTML (o redirecciona) cuando hay errores (404, 422).
+  - Con esto, Laravel devuelve errores en formato JSON.
 ---
 **PROYECTO 1 COMPLETADO: Sistema de Biblioteca**
