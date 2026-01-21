@@ -33,6 +33,7 @@ class StudentController extends Controller
     {
         $student = Student::create($request->validated());
         return (new  StudentResource($student))
+        ->adittiona('¡Estudiante creado con exito!')
         ->response()
         ->setStatusCode(Response::HTTP_CREATED);
     }
@@ -52,6 +53,7 @@ class StudentController extends Controller
     {
         $student->update($request->validated());
         return (new StudentResource($student))
+        ->aditional('¡Estudiante actualizado con exito!')
         ->response()
         ->setStatusCode(Response::HTTP_OK);
     }

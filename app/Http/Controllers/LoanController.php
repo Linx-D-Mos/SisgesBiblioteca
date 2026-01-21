@@ -33,7 +33,12 @@ class LoanController extends Controller
         $book = Book::findOrFail($validated['book_id']);
         try {
             $loan = $loanService->createLoan($student, $book);
-            return (new LoanResource($loan))->response()->setStatusCode(Response::HTTP_CREATED);
+            return (new LoanResource($loan))
+            ->additional([
+                    'message' => '¡Libro prestado con exito!'
+                ])
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
         } catch (Exception $e) {
             Log::error('Ocurrio un error al realizar el prestamo' . $e->getmessage());
             return response()->json(

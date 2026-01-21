@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends Controller
 {
@@ -35,7 +36,10 @@ class BookController extends Controller
                     $book = Book::create($request->validated());
                     $book->authors()->sync($request->validated()['authors']);
 
-                    return $book->load('authors');
+                    return ($book->load('authors'))
+                    ->adittional('¡Libro prestado con exito!')
+                    ->response()
+                    ->setStatusCodet(Response::HTTP_CREATED);
                 }
             );
             return new StoreBookResource($book);
@@ -71,7 +75,12 @@ class BookController extends Controller
                     return $book->load('authors');
                 }
             );
-            return new BookResource($book);
+            return (new BookResource($book))
+                ->additional([
+                    'message' => '¡Libro actualizado con exito!'
+                ])
+                ->response()
+                ->setStatusCode(Response::HTTP_OK);
         } catch (Exception $e) {
             Log::error('Error actualizando el libro: ' . $e->getMessage());
             return response()->json([
@@ -96,7 +105,7 @@ class BookController extends Controller
         } catch (Exception $e) {
             Log::error('Error actualizando el libro: ' . $e->getMessage());
             return response()->json([
-                'message' => 'Ocurrio un error interno al procesar su solicitud' 
+                'message' => 'Ocurrio un error interno al procesar su solicitud'
             ], 500);
         }
     }
